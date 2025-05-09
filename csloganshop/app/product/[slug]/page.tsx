@@ -1,11 +1,9 @@
-
-import AddToBag from "@/app/components/AddToBag";
 import ImageGallery from "@/app/components/ImageGallery";
 import { fullProduct } from "@/app/interface";
 import { client } from "@/app/lib/sanity";
 import { Button } from "@/components/ui/button";
-import { Star, Truck } from "lucide-react";
 import ProductPurchase from "@/app/components/ProductPurchase";
+import { Star } from "lucide-react";
 
 
 async function getData(slug: string) {
