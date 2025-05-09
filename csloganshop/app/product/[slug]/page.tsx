@@ -5,13 +5,6 @@ import { Button } from "@/components/ui/button";
 import ProductPurchase from "@/app/components/ProductPurchase";
 import { Star } from "lucide-react";
 
-// Define type for dynamic route props
-interface PageProps {
-    params: {
-        slug: string;
-    };
-}
-
 async function getData(slug: string) {
     const query = `*[_type == "product" && slug.current == $slug][0]{
     _id,
@@ -28,7 +21,12 @@ async function getData(slug: string) {
     return data;
 }
 
-export default async function ProductPage({ params }: PageProps) {
+// ✅ FIXED: Use inline type annotation for `params`
+export default async function ProductPage({
+    params,
+}: {
+    params: { slug: string };
+}) {
     const data: fullProduct = await getData(params.slug);
 
     return (
