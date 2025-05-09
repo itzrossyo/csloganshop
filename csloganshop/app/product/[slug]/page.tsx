@@ -5,26 +5,32 @@ import { Button } from "@/components/ui/button";
 import ProductPurchase from "@/app/components/ProductPurchase";
 import { Star } from "lucide-react";
 
+// Define type for dynamic route props
+interface PageProps {
+    params: {
+        slug: string;
+    };
+}
 
 async function getData(slug: string) {
     const query = `*[_type == "product" && slug.current == $slug][0]{
-        _id,
-        images,
-        price,
-        name,
-        description,
-        "slug": slug.current,
-        "categoryName": category->name,
-        price_id,
-    }`;
+    _id,
+    images,
+    price,
+    name,
+    description,
+    "slug": slug.current,
+    "categoryName": category->name,
+    price_id,
+  }`;
 
     const data = await client.fetch(query, { slug });
     return data;
 }
 
-export default async function ProductPage({ params,
-}: { params: { slug: string }; }) {
+export default async function ProductPage({ params }: PageProps) {
     const data: fullProduct = await getData(params.slug);
+
     return (
         <div className="bg-white">
             <div className="mx-auto max-w-screen-xl px-4 md:px-8">
@@ -35,23 +41,19 @@ export default async function ProductPage({ params,
                             <span className="mb-0.5 inline-block text-gray-500">
                                 {data.categoryName}
                             </span>
-                            <h2 className="text-2xl font-bold text-gray-800 lg:text-3xl">{data.name}</h2>
+                            <h2 className="text-2xl font-bold text-gray-800 lg:text-3xl">
+                                {data.name}
+                            </h2>
                         </div>
                         <div className="mb_6 flex items-center gap-3 md:mb-10">
                             <Button className="rounded-full gap-2">
-                                {/* might add this or take it out  */}
-                                <span className="text-sm">
-                                    4.2
-                                </span>
+                                <span className="text-sm">4.2</span>
                                 <Star className="h-6 w-5" />
                             </Button>
-                            {/* might add this or take it out  */}
                             <span className="text-sm text-gray-500 transition duration-100">
                                 56 Ratings
                             </span>
                         </div>
-
-
 
                         <ProductPurchase data={data} />
 
@@ -62,5 +64,5 @@ export default async function ProductPage({ params,
                 </div>
             </div>
         </div>
-    )
+    );
 }
